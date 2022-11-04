@@ -12,25 +12,8 @@ const COLOR = {
   GreyLight200: '#DDDDDD',
   CTAShadowColor: '#0000001F',
   TabShadowColor: '#00000014',
+  LoaderBackground: '#00000060',
 };
-
-
-const FONT = {
-  PrimaryBold: 'Ubuntu-Bold',
-  PrimaryBoldItalic: 'Ubuntu-BoldItalic',
-  PrimaryLight: 'Ubuntu-Light',
-  PrimaryLightItalic: 'Ubuntu-LightItalic',
-  PrimaryRegular: 'Ubuntu-Regular',
-  PrimaryMedium: 'Ubuntu-Medium',
-  PrimaryMediumItalic: 'Ubuntu-MediumItalic',
-  PrimarySemiBold: 'Ubuntu-Medium',
-  PrimarySemiBoldItalic: 'Ubuntu-MediumItalic',
-};
-
-const BUTTON = {
-  radius: 5,
-};
-
 
 
 export default {

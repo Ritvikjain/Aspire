@@ -1,4 +1,4 @@
-import { IWeeklySpendingLimitState } from '../../constants/types';
+import { ICardData, ICardLimits, IWeeklySpendingLimitState } from '../../constants/types';
 import { ACTION_TYPES } from './actionTypes';
 
 const setWeeklySpendingLimit = (data: IWeeklySpendingLimitState) => ({
@@ -6,6 +6,18 @@ const setWeeklySpendingLimit = (data: IWeeklySpendingLimitState) => ({
   data
 });
 
+const setCardData = (data: ICardData) => ({
+  type: ACTION_TYPES.APP.CARD_DATA,
+  data
+});
+
+const setCardLimits = (data: ICardLimits) => ({
+  type: ACTION_TYPES.APP.CARD_LIMITS,
+  data
+});
+
 export {
   setWeeklySpendingLimit,
+  setCardData,
+  setCardLimits,
 }

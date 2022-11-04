@@ -1,12 +1,14 @@
 import { connect } from 'react-redux';
 import { ThunkDispatch } from 'redux-thunk';
-import { weeklySpendingLimitSelector } from '../../../redux/selectors/app';
-import { handleWeeklyLimitToogleClick } from '../../../redux/thunks/app.thunk';
+import { cardDataSelector, cardLimitsSelector, weeklySpendingLimitSelector } from '../../../redux/selectors/app';
+import { handleWeeklyLimitToogleClick, loadInitialData } from '../../../redux/thunks/app.thunk';
 import Component from './component';
 
 const mapStateToProps = (state: any, ownProps: any) => {
   return {
     weeklySpendingLimit: weeklySpendingLimitSelector(state),
+    cardData: cardDataSelector(state),
+    cardLimits: cardLimitsSelector(state),
   };
 };
 
@@ -15,6 +17,7 @@ const mapDispatchToProps = (
   ownProps: any,
 ) => {
   return {
+    loadInitialData: loadInitialData,
     onClickWeeklySpendingLimit: () => handleWeeklyLimitToogleClick(ownProps.componentId),
   };
 };

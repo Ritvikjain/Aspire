@@ -1,10 +1,11 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   StyleSheet,
   Text,
   Platform,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 
 import layout from '../../../../constants/layout';
@@ -21,7 +22,7 @@ import spendingLimitIcon from '../../../images/spendingLimitIcon.png';
 import freezeCardIcon from '../../../images/freezeCardIcon.png';
 import deactivateCardIcon from '../../../images/deactivateCardIcon.png';
 import getNewCardIcon from '../../../images/getNewCardIcon.png';
-import {IWeeklySpendingLimitState} from '../../../../constants/types';
+import {ICardData, ICardLimits, IWeeklySpendingLimitState} from '../../../../constants/types';
 import ProgressBar from '../../../widgets/ProgressBar';
 
 const createStyles = () =>
@@ -84,19 +85,41 @@ const createStyles = () =>
     progressContainer: {
       marginTop: layout.window.toNormH(26),
     },
+    loaderContainer: {
+      width: '100%',
+      height: '100%',
+      backgroundColor: theme.COLOR.LoaderBackground,
+      justifyContent: 'center',
+      alignItems: 'center',
+    }
   });
 
 interface IProps {
   weeklySpendingLimit: IWeeklySpendingLimitState;
   onClickWeeklySpendingLimit: Function;
+  loadInitialData: Function;
+  cardData: ICardData;
+  cardLimits: ICardLimits;
 }
 
 const Dashboard: React.FC<IProps> = ({
   weeklySpendingLimit,
   onClickWeeklySpendingLimit,
+  loadInitialData,
+  cardData,
+  cardLimits,
 }) => {
   const styles = createStyles();
   const [isCardFreezed, setIsCardFreezed] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const onLoad = async () => {
+    setIsLoading(true);
+    await loadInitialData();
+    setIsLoading(false);
+  }
+  useEffect(() => {
+    onLoad();
+  }, [])
 
   return (
     <>
@@ -106,7 +129,7 @@ const Dashboard: React.FC<IProps> = ({
           <Text style={styles.subTitleText}>{locale.AVAILABLE_BALANCE}</Text>
           <View style={styles.amountContainer}>
             <CurrencyContainer />
-            <Text style={styles.amountText}>{formatCurrency(3000)}</Text>
+            <Text style={styles.amountText}>{formatCurrency(cardLimits?.availableBalance)}</Text>
           </View>
         </View>
         <ScrollView
@@ -117,10 +140,10 @@ const Dashboard: React.FC<IProps> = ({
           <View style={styles.bottomContainer}>
             <CardWidget
               cardDetails={{
-                userName: 'Mark Henry',
-                cardNumber: '1234123412341234',
-                expDate: '12/22',
-                cvv: '456',
+                userName: cardData?.userName,
+                cardNumber: cardData?.cardNumber,
+                expDate: cardData?.expDate,
+                cvv: cardData?.cvv,
               }}
             />
 
@@ -128,7 +151,7 @@ const Dashboard: React.FC<IProps> = ({
               <ProgressBar
                 title={locale.WEEKLY_LIMIT_PROGRESS_TITLE}
                 limits={{
-                  currentValue: 500,
+                  currentValue: cardLimits?.currentSpends,
                   maxLimit: weeklySpendingLimit?.value,
                 }}
                 customContainerStyles={styles.progressContainer}
@@ -180,6 +203,9 @@ const Dashboard: React.FC<IProps> = ({
         </ScrollView>
       </Base>
       <BottomTabs />
+      {isLoading ? <View style={styles.loaderContainer}>
+        <ActivityIndicator color={theme.COLOR.WhitePrimary}/>
+      </View> : null}
     </>
   );
 };
