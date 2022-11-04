@@ -1,0 +1,6 @@
+export const ACTION_TYPES = {
+  APP: {
+    BOTTOM_TABS: 'BOTTOM_TABS',
+    WEEKLY_SPENDING_LIMIT: 'WEEKLY_SPENDING_LIMIT',
+  },
+};
